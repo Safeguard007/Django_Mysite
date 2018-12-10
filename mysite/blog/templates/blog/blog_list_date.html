@@ -1,0 +1,59 @@
+{% extends 'blog/blog_base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    博客|{{ blog_with_dates }}
+{% endblock %}
+
+{% block bootstrap_extend %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+    <script type="text/javascript" src="{% static 'jquery1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+
+{% block blog_list %}
+    <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'home' %}">主页</a></li>
+                        <li><a href="{% url 'blog:blog_list' %}">博客</a></li>
+                        <li class="active">{{ blog_with_dates }}</li>
+                    </ol>
+                </div>
+                <div class="panel-body">
+                    {% for blog in blog_page %}
+                        <a href="{% url 'blog:blog_detail' blog.pk %}">
+                            <h3>{{ blog.title }}</h3>
+                        </a>
+                        <p>{{ blog.content|striptags|truncatechars:100 }}</p>
+                        <p>阅读：{{ blog.get_read_num }}</p>
+                        <hr>
+                    {% empty %}
+                        <div class="alert alert-info" role="alert">尚未有任何文章发布</div>
+                    {% endfor %}
+                        <p>共{{ blogs|length }}篇文章</p>
+                </div>
+            </div>
+{% endblock %}
+
+{% block blog_other %}
+    <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ol class="breadcrumb">
+                        <li>博客</li>
+                        <li>分类</li>
+                    </ol>
+                </div>
+                <div class="panel-body">
+                    {% for type in blog_type %}
+                        <a href="{% url 'blog:blog_list_type' type.pk %}">
+                            {{ type }}
+                            <span class="badge">{{ type.blog_type_count }}</span>
+                        </a>
+                    {% empty %}
+                        <p>没有任何分类</p>
+                    {% endfor %}
+                </div>
+            </div>
+{% endblock %}

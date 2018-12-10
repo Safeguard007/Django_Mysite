@@ -1,0 +1,60 @@
+{% extends 'blog/blog_base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    博客|{{ blog_type.type_name }}
+{% endblock %}
+
+{% block bootstrap_extend %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+    <script type="text/javascript" src="{% static 'jquery1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+
+{% block blog_list %}
+    <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'home' %}">主页</a></li>
+                        <li><a href="{% url 'blog:blog_list' %}">博客</a></li>
+                        <li class="active">{{ blog_type.type_name }}</li>
+                    </ol>
+                </div>
+                <div class="panel-body">
+                    {% for blog in blog_page %}
+                        <a href="{% url 'blog:blog_detail' blog.pk %}">
+                            <h3>{{ blog.title }}</h3>
+                        </a>
+                        <p>{{ blog.content|striptags|truncatechars:150 }}</p>
+                        <p>阅读：{{ blog.get_read_num }}</p>
+                        <hr>
+                    {% empty %}
+                        <div class="alert alert-info" role="alert">尚未有任何文章发布</div>
+                    {% endfor %}
+                    <p>共{{ blogs|length }}篇文章</p>
+                </div>
+            </div>
+{% endblock %}
+
+{% block blog_other %}
+    <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ol class="breadcrumb">
+                            <li>博客</li>
+                            <li>发布时间</li>
+                    </ol>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for blog_date in blog_dates %}
+                            <li>
+                                <a href="{% url 'blog:blog_list_date' blog_date.year blog_date.month %}">
+                                    {{blog_date|date:"Y年m月"}}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+{% endblock %}

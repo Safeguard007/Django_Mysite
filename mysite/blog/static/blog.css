@@ -1,0 +1,35 @@
+ol.breadcrumb{
+    margin-bottom: 0px;
+}
+
+div.panel{
+    margin: 20px;
+}
+
+ul.nav{
+    margin: 20px;
+}
+
+ul.pagination{
+    margin: 20px;
+}
+
+p.type_title{
+    margin-bottom: 0px;
+}
+
+p.time_title{
+    margin-bottom: 0px;
+}
+
+ul{
+    list_style_type: none!important;
+}
+
+div.input-group{
+    margin: 20px;
+}
+
+div.reply{
+    margin-left: 20px;
+}

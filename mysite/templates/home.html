@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    炮兵的主页
+{% endblock %}
+
+{% block bootstrap_extend %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+    <script type="text/javascript" src="{% static 'jquery1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>你好，炮兵</h1>
+        <p>砰砰砰</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">获取更多信息</a></p>
+    </div>
+{% endblock %}

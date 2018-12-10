@@ -1,0 +1,17 @@
+<title>投票结果|{{question.question_text}}</title>
+<div>
+    <a href="{% url 'home' %}">
+        <h2>主页</h2>
+    </a>
+    <a href="{% url 'polls:index' %}">
+        <h2>投票</h2>
+    </a>
+</div>
+<hr>
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+<a href="{% url 'polls:detail' question.id %}">再投一次?</a>

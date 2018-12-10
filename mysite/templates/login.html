@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    登录
+{% endblock %}
+
+{% block bootstrap_extend %}
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+    <script type="text/javascript" src="{% static 'jquery1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor-init.js' %}"></script>
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ol class="breadcrumb">
+                        登录
+                    </ol>
+                </div>
+                <div class="panel-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <!--{{ login_form }}-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="username">用户名</label>-->
+                            <!--<input type="text" class="form-control" id="username" placeholder="Username">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="password">密码</label>-->
+                            <!--<input type="password" class="form-control" id="password" placeholder="Password">-->
+                        <!--</div>-->
+
+                        {% for field in login_form %}
+                            <label>{{ field.label }}</label>
+                            {{ field }}
+                            <p class="text_danger">{{ field.errors.as_text }}</p>
+                        {% endfor %}
+
+                        <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
+                        <button type="submit" class="btn btn-default pull-right">登录</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
