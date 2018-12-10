@@ -97,19 +97,12 @@ def get_blog_detail(request, blog_id):
     read_key = read_cookie(request, blog)
     dates, read_nums = read_num_by_days(blog, days=7)
     today_hot, yesterday_hot, seven_day_hot, thirty_day_hot = get_hot_data()
-    blog_content_type = ContentType.objects.get_for_model(blog)
-    comments = Comment.objects.filter(content_type=blog_content_type, object_id=blog_id, parent=None)
-    data = dict()
-    data['content_type'] = blog_content_type.model
-    data['object_id'] = blog_id
 
     context = dict()
     context['today_hot_blogs'] = today_hot
     context['yesterday_hot_blogs'] = yesterday_hot
     context['seven_day_hot_blogs'] = seven_day_hot
     context['thirty_day_hot_blogs'] = today_hot
-    context['comments'] = comments
-    context['comment_form'] = CommentForm(initial={'content_type': blog_content_type.model, 'object_id': blog_id, 'reply_comment_id': 0})
     context['user'] = request.user
     context['blog'] = blog
     context['dates'] = dates

@@ -24,7 +24,7 @@ def upload_comment(request):
         # return redirect(referer)
         data['status'] = 'SUCCESS'
         data['username'] = comment.user.username
-        data['comment_time'] = timezone.localdate()
+        data['comment_time'] = comment.comment_time.timestamp()
         data['text'] = comment.text
     else:
         # return render(request, 'error.html', {'message': comment_form.errors, 'redirect_to': referer})

@@ -33,3 +33,13 @@ div.input-group{
 div.reply{
     margin-left: 20px;
 }
+
+div.like{
+    color: #337ab7;
+    cursor: pointer;
+    display: inline-block;
+}
+
+div.like .active{
+    color: #f22;
+}

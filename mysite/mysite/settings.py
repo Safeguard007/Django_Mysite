@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'polls',                                # 投票
     'num_count',                            # 阅读计数
     'comment',                              # 评论
+    'like',                                 # 点赞
 ]
 
 MIDDLEWARE = [
