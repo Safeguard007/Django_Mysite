@@ -1,6 +1,7 @@
 {% extends 'blog/blog_base.html' %}
 {% load staticfiles %}
 {% load comment_tags %}
+{% load like_tags %}
 
 {% block title %}
     博客|{{ blog.title }}
@@ -37,9 +38,9 @@
             </p>
             <p>阅读：{{ blog.get_read_num }}</p>
             <p>评论：{% get_comment_count blog %}</p>
-            <div class="like" onclick="like_change('blog', {{ blog.pk }})">
-                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                <span class="like-num">0</span>
+            <div class="like" onclick="likeChange(this, 'blog', {{ blog.pk }})">
+                <span class="glyphicon glyphicon-thumbs-up {% get_like_status blog %}"></span>
+                <span class="like-num">{% get_like_count blog %}</span>
                 <span>喜欢</span>
             </div>
             <p>{{ blog.content|safe }}</p>
@@ -239,20 +240,37 @@
             })
             return false;
         });
-        function likeChange(){
+        function likeChange(obj, content_type, object_id){
+            var is_like = obj.getElementsByClassName('active').length == 0;
             $.ajax({
                 url: '{% url 'like_change' %}',
                 type: 'GET',
                 data: {
-                    content_type: '',
-                    object_id: ''
+                    content_type: content_type,
+                    object_id: object_id,
+                    is_like: is_like
                 },
                 cache: false,
                 success: function(data){
+                    console.log(data);
+                    if(data['status']=='SUCCESS'){
+                        var element = $(obj.getElementsByClassName('glyphicon'));
+                        if(is_like){
+                            element.addClass('active');
+                        }
+                        else{
+                            element.removeClass('active');
+                        }
 
+                        var like_num = $(obj.getElementsByClassName('like-num'));
+                        like_num.text(data['like_num']);
+
+                    }else{
+                        alert(data['message']);
+                    }
                 },
                 error: function(xhr){
-
+                    console.log(xhr);
                 }
             });
         }
