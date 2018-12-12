@@ -23,6 +23,9 @@ def ErrorResponse(code, message):
 def like_change(request):
     user = request.user
     object_id = int(request.GET.get('object_id'))
+    if not user.is_authenticated:
+        return ErrorResponse(400, '你还未登录')
+
     try:
         content_type = ContentType.objects.get(model=request.GET.get('content_type'))
         model_class = content_type.model_class()

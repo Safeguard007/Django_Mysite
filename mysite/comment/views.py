@@ -27,7 +27,7 @@ def upload_comment(request):
         data['comment_time'] = comment.comment_time.timestamp()
         data['text'] = comment.text
     else:
-        # return render(request, 'error.html', {'message': comment_form.errors, 'redirect_to': referer})
+        # return render(request, 'error.html.html', {'message': comment_form.errors, 'redirect_to': referer})
         data['status'] = 'ERROR'
         data['message'] = list(comment_form.errors.values())[0]
 
@@ -36,11 +36,11 @@ def upload_comment(request):
     # referer = request.META.get('HTTP_REFERER', reverse('home'))
     #
     # if not request.user.is_authenticated:
-    #     return render(request, 'error.html', {'message': '用户未登录', 'redirect_to': referer})
+    #     return render(request, 'error.html.html', {'message': '用户未登录', 'redirect_to': referer})
     #
     # text = request.POST.get('text', '').strip()
     # if text == '':
-    #     return render(request, 'error.html', {'message': '评论内容不能为空', 'redirect_to': referer})
+    #     return render(request, 'error.html.html', {'message': '评论内容不能为空', 'redirect_to': referer})
     #
     # try:
     #     content_type = request.POST.get('content_type', '')
@@ -48,7 +48,7 @@ def upload_comment(request):
     #     model_class = ContentType.objects.get(model=content_type).model_class()
     #     model_obj = model_class.objects.get(pk=object_id)
     # except Exception as e:
-    #     return render(request, 'error.html', {'message': '评论对象不存在', 'redirect_to': referer})
+    #     return render(request, 'error.html.html', {'message': '评论对象不存在', 'redirect_to': referer})
     #
     # comment = Comment()
     # comment.user = request.user

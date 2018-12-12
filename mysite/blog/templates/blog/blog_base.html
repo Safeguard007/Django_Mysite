@@ -1,20 +1,5 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-
-    {% block bootstrap_extend %}{% endblock %}
-
-</head>
-<body>
-    <ul class="nav nav-pills">
-        <li role="presentation"><a href="{% url 'home' %}">主页</a></li>
-        <li role="presentation" class="active"><a href="{% url 'blog:blog_list' %}">博客</a></li>
-        <li role="presentation"><a href="{% url 'polls:index' %}">投票</a></li>
-    </ul>
-
-
+{% extends 'base.html' %}
+{% block content %}
     <div class="row">
         <div class="col-md-8">
 
@@ -180,6 +165,4 @@
             </li>
         </ul>
     </nav>
-
-</body>
-</html>
+{% endblock %}

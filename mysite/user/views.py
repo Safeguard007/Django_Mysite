@@ -4,31 +4,12 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.http import JsonResponse
+
 from .forms import LoginForm, RegisterForm
 
 
-def index(request):
-    return render(request, 'home.html')
-
-
-def page_not_found(request):
-    return render(request, '404.html')
-
-
-def page_error(request):
-    return render(request, '500.html')
-
-
-def permission_denied(request):
-    return render(request, '403.html')
-
-
-def bad_request(request):
-    return render(request, '400.html')
-
-
 def user_inf(request):
-    return render(request, 'user_inf.html')
+    return render(request, 'inf.html')
 
 
 def user_logout(request):

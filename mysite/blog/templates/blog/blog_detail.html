@@ -46,12 +46,13 @@
             <p>{{ blog.content|safe }}</p>
             <p>
                 {% if previous_blog %}
-                    <a class="previous_blog" href="{% url 'blog:blog_detail' previous_blog.pk %}">上一篇：{{previous_blog.title}}</a>
+                    上一篇：<a class="previous_blog" href="{% url 'blog:blog_detail' previous_blog.pk %}">{{previous_blog.title}}</a>
                 {% else %}
                     没有更多文章了
                 {% endif %}
+                &nbsp;&nbsp;
                 {% if next_blog %}
-                    <a class="next_blog" href="{% url 'blog:blog_detail' next_blog.pk %}">下一篇：{{next_blog.title}}</a>
+                    下一篇：<a class="next_blog" href="{% url 'blog:blog_detail' next_blog.pk %}">{{next_blog.title}}</a>
                 {% else %}
                     没有更多文章了
                 {% endif %}
@@ -153,8 +154,15 @@
                                     <br/>
                                     {{ comment.text|safe }}
                                     <br/>
+                                    <div class="like" onclick="likeChange(this, 'comment', {{ comment.pk }})">
+                                        <span class="glyphicon glyphicon-thumbs-up {% get_like_status blog %}"></span>
+                                        <span class="like-num">{% get_like_count blog %}</span>
+                                        <span>喜欢</span>
+                                    </div>
+                                    &nbsp;&nbsp;
                                     <a href="javascript:reply({{ comment.pk }});">回复</a>
-                                    {% for reply in comment.root_comment.all %}
+                                    <div id="reply_list">
+                                        {% for reply in comment.root_comment.all %}
                                         <div class="reply">
                                             <hr>
                                             {{ reply.user.username }}回复{{ reply.reply_to.username }}
@@ -163,10 +171,17 @@
                                             <br/>
                                             {{ reply.text|safe }}
                                             <br/>
+                                            <div class="like" onclick="likeChange(this, 'reply', {{ reply.pk }})">
+                                                <span class="glyphicon glyphicon-thumbs-up {% get_like_status blog %}"></span>
+                                                <span class="like-num">{% get_like_count blog %}</span>
+                                                <span>喜欢</span>
+                                            </div>
+                                            &nbsp;&nbsp;
                                             <a href="javascript:reply({{ reply.pk }});">回复</a>
                                             <hr>
                                         </div>
-                                    {% endfor %}
+                                        {% endfor %}
+                                    </div>
                                     <hr>
                                 </div>
                             {% empty %}
@@ -182,6 +197,13 @@
 
 {% block script_extends %}
     <script type="text/javascript">
+        String.prototype.format = function(){
+            var str = this;
+            for (var i = 0; i < arguments.length; i++){
+                this.replace(new RegExp('\\{' + i + '\\}', 'g'), argument[i])
+            };
+            return str;
+        }
         function reply(reply_comment_id){
             $("#reply_comment_id").val(reply_comment_id);
             $("html").animate({scrollTop: $("#comment_form").offset().top - 60}, 300);
@@ -201,14 +223,6 @@
         }
         $("#comment_form").submit(function(){
 
-            <!--$("#comment_error").text('');-->
-            <!--if(CKEDITOR.instances['id_text'].document.getBody().getText().trim()==''){-->
-                <!--$("#comment_error").text('评论内容不能为空');-->
-                <!--return false;-->
-            <!--}-->
-
-            <!--CKEDITOR.instances['id_text'].UpdateElement();-->
-
             $("#comment_zero").text('');
             $.ajax({
                 url: "{% url 'upload_comment' %}",
@@ -218,18 +232,33 @@
                 success: function(data){
                     console.log(data);
                     if(data['status']=="SUCCESS"){
-                        var comment_html = '<div class="comment">' +
-                                            data['username'] +
-                                            '<br/>' +
-                                            timeFormat(data['comment_time']) +
-                                            '<br/>' +
-                                            data['text'] +
-                                            '<br/>' +
-                                            '<a href="javascript:reply(' + data['pk'] + ');">' + '回复' + '</a>' +
-                                            '<hr>' +
-                                            '</div>'
-                        $("#comment_list").prepend(comment_html);
-                        CKEDITOR.instances['id_text'].setData('');
+                        if($('#reply_comment_id').val()=='0'){
+                            var comment_html = '<div class="comment">' +
+                                                data['username'] +
+                                                '<br/>' +
+                                                timeFormat(data['comment_time']) +
+                                                '<br/>' +
+                                                data['text'] +
+                                                '<br/>' +
+                                                '<a href="javascript:reply(' + data['pk'] + ');">' + '回复' + '</a>' +
+                                                '<hr>' +
+                                                '</div>'
+                            $("#comment_list").prepend(comment_html);
+                            CKEDITOR.instances['id_text'].setData('');
+                        }else{
+                            var reply_html = '<div class="reply">' +
+                                                data['username'] + '回复' +
+                                                '<br/>' +
+                                                timeFormat(data['comment_time']) +
+                                                '<br/>' +
+                                                data['text'] +
+                                                '<br/>' +
+                                                '<a href="javascript:reply(' + data['pk'] + ');">' + '回复' + '</a>' +
+                                                '<hr>' +
+                                                '</div>'
+                            $("#reply_list").prepend(reply_html);
+                            CKEDITOR.instances['id_text'].setData('');
+                        }
                     }else{
                         $("#comment_error").text(data['message']);
                     }
@@ -266,7 +295,11 @@
                         like_num.text(data['like_num']);
 
                     }else{
-                        alert(data['message']);
+                        if(data['code'] == 400){
+                            $('#login-modal').modal('show')
+                        }else{
+                            alert(data['message'])
+                        }
                     }
                 },
                 error: function(xhr){
