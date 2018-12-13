@@ -24,12 +24,20 @@
                 <div class="panel-body">
                     <h2>{{ user.username }}</h2>
                     <ul>
+                        <li>
+                            昵称：
+                            {{ user.get_nickname }}
+                            &nbsp;
+                            <a href="{% url 'change_profile' %}?from={{ request.get_full_path }}">
+                                修改昵称
+                            </a>
+                        </li>
                         <li>邮箱：
                             {% if user.email %}
                                 {{ user.email }}
-                            {% else %}
-                                <a href="">点此绑定邮箱</a>
                             {% endif %}
+                            &nbsp;
+                            <a href="{% url 'blind_email' %}?from={{ request.get_full_path }}">点此绑定邮箱</a>
                         </li>
                         <li>
                             最近登录时间：

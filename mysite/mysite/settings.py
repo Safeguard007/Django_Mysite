@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'num_count',                            # 阅读计数
     'comment',                              # 评论
     'like',                                 # 点赞
+    'user',                                 # 用户
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
+                'user.context_processors.login_modal_form',
             ],
         },
     },
@@ -168,3 +169,12 @@ CACHES = {
         'LOCATION': 'my_cache_table'
     }
 }
+
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = 'safeguard@163.com'
+EMAIL_HOST_PASSWORD = 'h1gh2170'
+EMAIL_USE_TLE = True
+

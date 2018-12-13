@@ -60,3 +60,38 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError('两次输入密码不一致')
         return password_again
 
+
+class ChangeProflieForm(forms.Form):
+    nickname_new = forms.CharField(label='新昵称',
+                                   max_length=20,
+                                   widget=forms.TextInput(
+                                       attrs={'class': 'form-control', 'placeholder': '填写新昵称'}))
+
+    def __init__(self, *args, **kwargs):
+        if 'user' in kwargs:
+            self.user = kwargs.pop('user')
+        super(ChangeProflieForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if self.user.is_authenticated:
+            self.cleaned_data['user'] = self.user
+        else:
+            raise forms.ValidationError('用户未登录')
+
+        return self.cleaned_data
+
+    def clean_nickname_new(self):
+        nickname_new = self.cleaned_data.get('nickname_new', '').strip()
+        if nickname_new == '':
+            raise forms.ValidationError('昵称不能为空')
+
+        return nickname_new
+
+
+class BlindEmailForm(forms.Form):
+    email = forms.EmailField(label='Email',
+                             widget=forms.EmailInput(
+                                 attrs={'class': 'form-control', 'placeholder': '填写正确的Email地址'}))
+    verification_code = forms.CharField(label='验证码',
+                                        widget=forms.TextInput(
+                                            attrs={'class': 'form-control', 'placeholder': '点击“发送验证码”发送到邮箱'}))

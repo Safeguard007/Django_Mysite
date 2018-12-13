@@ -13,11 +13,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('like/', include('like.urls')),
     path('comment/', include('comment.urls')),
-    path('login/', views.user_login, name='user_login'),
-    path('logout/', views.user_logout, name='user_logout'),
-    path('login_modal/', views.login_modal, name='login_modal'),
-    path('register/', views.user_register, name='user_register'),
-    path('user_inf/', views.user_inf, name='user_inf'),
+    path('user/', include('user.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -23,6 +23,7 @@
                         </a>
                         <ul class="dropdown-menu">
                         <li><a href="{% url 'user_inf' %}">个人信息</a></li>
+                        <li><a href="{% url 'admin:index' %}">后台管理</a></li>
                         <li><a href="{% url 'user_logout' %}">注销</a></li>
                         </ul>
                         </li>
@@ -45,7 +46,7 @@
                     </div>
                     <div class="modal-body">
                         {% csrf_token %}
-                        {% for field in login_form %}
+                        {% for field in login_modal_form %}
                             <label>{{ field.label }}</label>
                             {{ field }}
                         {% endfor %}
@@ -81,9 +82,6 @@
                 url: '{% url 'login_modal' %}',
                 type: 'POST',
                 data: $(this).serialize(),
-                <!--data: {username: $('#id_username').val(),-->
-                       <!--password: $('#id_password').val(),-->
-                       <!--csrfmiddlewaretoken:'{{ csrf_token }}'},-->
                 cache: false,
                 success: function(data){
                     if(data['status']=='SUCCESS'){

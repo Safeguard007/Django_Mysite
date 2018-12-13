@@ -1,14 +1,10 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
-from django.core.cache import caches
 from django.db.models import Count
 
 from .models import Blog, BlogType
 from num_count.utils import read_cookie, read_num_by_days, get_hot_blog
-from comment.models import Comment
-from comment.forms import CommentForm
-from mysite.forms import LoginForm
 
 
 # 获取各博客页面公共内容
@@ -104,7 +100,6 @@ def get_blog_detail(request, blog_id):
     context['yesterday_hot_blogs'] = yesterday_hot
     context['seven_day_hot_blogs'] = seven_day_hot
     context['thirty_day_hot_blogs'] = today_hot
-    context['login_form'] = LoginForm()
     context['user'] = request.user
     context['blog'] = blog
     context['dates'] = dates
