@@ -1,9 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'form.html' %}
 {% load staticfiles %}
 
-{% block title %}
-    个人信息修改
-{% endblock %}
+{% block title %}{{ form_head }}{% endblock %}
 
 {% block bootstrap_extend %}
     <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
@@ -12,34 +10,24 @@
     <script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
 {% endblock %}
 
-{% block content %}
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <ol class="breadcrumb">
-                        修改个人信息
-                    </ol>
-                </div>
-                <div class="panel-body">
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            {% if not field.is_hidden %}
-                                <label>{{ field.label }}</label>
-                            {% endif %}
-                            {{ field }}
-                            <p class="text_danger">{{ field.errors.as_text }}</p>
-                        {% endfor %}
+{% block form_head %}{{ form_head }}{% endblock %}
 
-                        <span class="pull-left text-danger">{{ form.non_field_errors }}</span>
-                        <div class="pull-right">
-                            <button type="submit" class="btn btn-default">确认</button>
-                            <button class="btn btn-default" onclick="window.location.href={{ return_back_url }}">返回</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+{% block form %}
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {% for field in form %}
+            {% if not field.is_hidden %}
+                <label>{{ field.label }}</label>
+            {% endif %}
+            {{ field }}
+            <p class="text_danger">{{ field.errors.as_text }}</p>
+        {% endfor %}
+
+        <span class="pull-left text-danger">{{ form.non_field_errors }}</span>
+        <div class="pull-right">
+            <button type="submit" class="btn btn-default">确认</button>
+            <button class="btn btn-default" onclick="window.location.href={{ return_back_url }}">返回</button>
         </div>
-    </div>
+    </form>
 {% endblock %}

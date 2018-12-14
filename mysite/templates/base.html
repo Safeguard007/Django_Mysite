@@ -76,7 +76,7 @@
     </style>
 
     <script type="text/javascript">
-        $("login_modal_form").submit(function(event){
+        $("#login_modal_form").submit(function(event){
             event.preventDefault();
             $.ajax({
                 url: '{% url 'login_modal' %}',

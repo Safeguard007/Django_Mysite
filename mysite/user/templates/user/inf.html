@@ -28,7 +28,7 @@
                             昵称：
                             {{ user.get_nickname }}
                             &nbsp;
-                            <a href="{% url 'change_profile' %}?from={{ request.get_full_path }}">
+                            <a href="{% url 'change_profile' %}">
                                 修改昵称
                             </a>
                         </li>
@@ -37,7 +37,7 @@
                                 {{ user.email }}
                             {% endif %}
                             &nbsp;
-                            <a href="{% url 'blind_email' %}?from={{ request.get_full_path }}">点此绑定邮箱</a>
+                            <a href="{% url 'blind_email' %}">点此绑定邮箱</a>
                         </li>
                         <li>
                             最近登录时间：

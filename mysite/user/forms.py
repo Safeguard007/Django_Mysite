@@ -32,6 +32,9 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(label='邮箱',
                              widget=forms.EmailInput(
                                  attrs={'class': 'form-control', 'placeholder': '输入邮箱'}))
+    verification_code = forms.CharField(label='验证码',
+                                        widget=forms.TextInput(
+                                            attrs={'class': 'form-control', 'placeholder': '点击“发送验证码”发送到邮箱'}))
     password = forms.CharField(label='密码',
                                min_length=6,
                                widget=forms.PasswordInput(
@@ -95,3 +98,40 @@ class BlindEmailForm(forms.Form):
     verification_code = forms.CharField(label='验证码',
                                         widget=forms.TextInput(
                                             attrs={'class': 'form-control', 'placeholder': '点击“发送验证码”发送到邮箱'}))
+
+    def __init__(self, *args, **kwargs):
+        if 'request' in kwargs:
+            self.request = kwargs.pop('request')
+
+        super(BlindEmailForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if self.request.user.is_authenticated:
+            self.cleaned_data['user'] = self.request.user
+
+        else:
+            raise forms.ValidationError('用户未登录')
+
+        # if self.request.user.email != '':
+        #     raise forms.ValidationError('此用户已绑定邮箱')
+
+        code = self.request.session.get('blind_email_code', '')
+        verification_code = self.cleaned_data.get('verification_code', '')
+        if not (code != '' and code == verification_code):
+            raise forms.ValidationError('验证码错误')
+
+        return self.cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists:
+            raise forms.ValidationError('此邮箱已被占用')
+
+        return email
+
+    def clean_verification_code(self):
+        verification_code = self.cleaned_data.get('verification_code', '').strip()
+        if verification_code == '':
+            raise forms.ValidationError('验证码不能为空')
+
+        return verification_code
