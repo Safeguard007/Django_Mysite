@@ -32,3 +32,29 @@
         </div>
     </form>
 {% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $("#send_code").click(function(){
+            var email = $("#id_email").val();
+            if(email==''){
+                $("#tip").text('邮箱不能为空');
+                return false;
+            }
+
+            $.ajax({
+                url: "{% url 'send_verification_code' %}",
+                type: "GET",
+                data: {
+                    'email': email
+                },
+                cache: false,
+                success: function(data){
+                    if(data['status'] == 'ERROR'){
+                        alert(data['status']);
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

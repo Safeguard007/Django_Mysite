@@ -71,6 +71,8 @@ def user_register(request):
             user.save()
             user = auth.authenticate(username=username, password=password)
             auth.login(request, user)
+            if request.user.is_authenticated:
+                return render(request, 'home.html')
             return HttpResponseRedirect(request.session['register_from'])
     else:
         register_form = RegisterForm()

@@ -124,8 +124,8 @@ class BlindEmailForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists:
-            raise forms.ValidationError('此邮箱已被占用')
+        # if User.objects.filter(email=email).exists:
+        #     raise forms.ValidationError('此邮箱已被占用')
 
         return email
 
