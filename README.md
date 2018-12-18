@@ -1,1 +1,1 @@
-# Django_Mysite
+# Mysite_Git
